@@ -8,7 +8,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class CustomButton {
 
-	public static void convertToWindowsButton(JComponent button, Color backgroundThenOnButton, Color backgroundThen_No_OnButton,  Color backgroundThenPress) {
+	public static void convertToCustomButton(JComponent button, Color backgroundThenOnButton, Color backgroundThen_No_OnButton,  Color backgroundThenPress) {
 
 		if(backgroundThen_No_OnButton == null) {
 			backgroundThen_No_OnButton = button.getBackground();
@@ -26,7 +26,6 @@ public class CustomButton {
 
 
 	private static void conver(JComponent button, Color backgroundC, Color backgroundNC, Color backgroundBP) {
-
 		try {
 			((AbstractButton) button).setBorderPainted(false);
 			button.setFocusable(false);
@@ -37,8 +36,7 @@ public class CustomButton {
 			@Override
 			public void run() {
 				while (true) {
-					if(((AbstractButton) button).getModel().isRollover()) {//if (onButton) {
-						//Set_Color(button, backgroundC, click, backgroundBP);
+					if(((AbstractButton) button).getModel().isRollover()) {
 						setColor(button, backgroundC, ((AbstractButton) button).getModel().isPressed(), backgroundBP);
 					} else {
 						setColor(button, backgroundNC, false, backgroundBP);

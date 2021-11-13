@@ -112,22 +112,17 @@ public class JLight2 extends JFrame {
 		game.setJBlocksBox(blocksBox);
 		contentPane.add(game, BorderLayout.CENTER);
 
-		JButton clear = new JButton("Clear");
+		JCustomButton clear = new JCustomButton("Clear", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(clear);
 
-		JButton viewMode = new JButton("View mode");
+		JCustomButton viewMode = new JCustomButton("View mode", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(viewMode);
 
-		JButton caves = new JButton("Create caves");
+		JCustomButton caves = new JCustomButton("Create caves", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(caves);
 		
-		JButton stop = new JButton("Stop");
+		JCustomButton stop = new JCustomButton("Stop", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(stop);
-
-		CustomButton.convertToWindowsButton(clear, new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
-		CustomButton.convertToWindowsButton(viewMode, new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
-		CustomButton.convertToWindowsButton(caves, new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
-		CustomButton.convertToWindowsButton(stop, new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 
 		clear.setForeground(Color.WHITE);
 		viewMode.setForeground(Color.WHITE);

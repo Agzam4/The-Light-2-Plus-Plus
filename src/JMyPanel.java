@@ -41,7 +41,6 @@ public class JMyPanel extends JPanel {
 				draw((Graphics2D) getGraphics());
 				wait = 100-(System.nanoTime()-start)/1_000_000;
 				if(wait < 1) wait = 1;
-				System.out.println(wait);
 				try {
 					Thread.sleep(wait);
 				} catch (InterruptedException e) {
