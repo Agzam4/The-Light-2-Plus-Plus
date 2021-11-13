@@ -59,7 +59,14 @@ public class JLight2 extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	public JLight2() {
+
+		JCustomButton clear = new JCustomButton("Clear", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
+		JCustomButton viewMode = new JCustomButton("View mode", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
+		JCustomButton caves = new JCustomButton("Create caves", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
+		JCustomButton stop = new JCustomButton("Stop", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 //			 UIManager.put("ComboBox.background", new ColorUIResource(new Color(15,15,15)));
@@ -112,16 +119,9 @@ public class JLight2 extends JFrame {
 		game.setJBlocksBox(blocksBox);
 		contentPane.add(game, BorderLayout.CENTER);
 
-		JCustomButton clear = new JCustomButton("Clear", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(clear);
-
-		JCustomButton viewMode = new JCustomButton("View mode", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(viewMode);
-
-		JCustomButton caves = new JCustomButton("Create caves", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(caves);
-		
-		JCustomButton stop = new JCustomButton("Stop", new Color(75,75,75), new Color(50,50,50), new Color(150,150,150));
 		buttons.add(stop);
 
 		clear.setForeground(Color.WHITE);

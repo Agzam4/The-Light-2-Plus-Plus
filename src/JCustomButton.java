@@ -5,11 +5,7 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class JCustomButton extends JButton {
 
