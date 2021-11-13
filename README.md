@@ -7,7 +7,8 @@
 * The new physics of light
 * The new UI
 
-### [Download game (v1.1.0)](https://github.com/Agzam4/The-Light-2-Plus-Plus/raw/main/The%20Light2%2B%2B%20v1.1.0.jar)
+### [Download game (v1.0.0)](https://github.com/Agzam4/The-Light-2-Plus-Plus/raw/main/The%20Light2%2B%2B%20v1.0.0.jar)
+#### _[Download game (v1.1.0)](https://github.com/Agzam4/The-Light-2-Plus-Plus/raw/main/The%20Light2%2B%2B%20v1.1.0.jar)_ **[Bugs]**
 
 ## Writing code:
 ##### [[Wiki] Creating blocks](https://github.com/Agzam4/The-Light-2-Plus-Plus/wiki/Creating-blocks)
