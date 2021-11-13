@@ -7,6 +7,7 @@ import game.Game;
 
 public class MechanicalValve extends Wires {
 
+	private static final long serialVersionUID = 14L;
 	boolean isOpend;
 	
 	@Override

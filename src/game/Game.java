@@ -4,7 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.rmi.server.ServerRef;
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import javax.swing.JOptionPane;
 
 import mechanism.ValveUp;
 import wires.Converter;
@@ -12,12 +20,13 @@ import wires.ElectricLamp;
 import wires.LightAmplifier;
 import wires.MechanicalValve;
 import wires.Wire;
+import work.ObjectWork;
 import mechanism.Eater;
 import mechanism.Generator;
 import mechanism.ValveLeft;
 import mechanism.ValveRight;
 
-public class Game {
+public class Game implements Serializable {
 	
 	public static int BlockSize = 10;
 	public static double scale = 0.1;
@@ -117,7 +126,6 @@ public class Game {
 		/*
 		 * TODO:
 		 * Wire-blocks:
-		 * 	Light amplifiers
 		 * 	Logic Valve
 		 */
 		TO_DELETE (new Block(Color.BLACK, true));
@@ -146,8 +154,8 @@ public class Game {
 	}
 	
 
-	Block[][] blocks;
-	Block[][] newBlocks;
+	private Block[][] blocks;
+	private Block[][] newBlocks;
 	
 	int[][] r,g,b;
 	int[][] wr,wg,wb; // wires
@@ -205,6 +213,10 @@ public class Game {
 				wb[x][y] = 0;
 			}
 		}
+		initImage();
+	}
+	
+	private void initImage() {
 		game = new BufferedImage(width*Game.BlockSize+2, height*Game.BlockSize+2, BufferedImage.TYPE_INT_RGB);
 	}
 	
@@ -433,6 +445,9 @@ public class Game {
 	}
 
 	public void draw(Graphics2D pg) { // TODO: draw
+		if(game == null) {
+			initImage();
+		}
 		Graphics2D g = (Graphics2D) game.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.BLACK);
@@ -494,11 +509,13 @@ public class Game {
 		return b ? 1 : 0;
 	}
 
-	public void setBlock(int x, int y, Block block) {
+	public boolean setBlock(int x, int y, Block block) {
 		if(checkBounds(x, y)) {
 			blocks[x][y] = block;
 			newBlocks[x][y] = block;
+			return true;
 		}
+		return false;
 	}
 
 	public void valve(int x, int y, int px, int py) {
@@ -664,5 +681,44 @@ public class Game {
 				wb[x+px][y+py] = wb[x-px][y-py]*5;
 			}
 		}
+	}
+	
+	/*
+	 * private void readObject(ObjectInputStream stream) throws IOException,
+	 * ClassNotFoundException { stream.defaultReadObject();
+	 * 
+	 * // blocks = new Block[width][height]; // newBlocks = new
+	 * Block[width][height]; blocks = new Block[width][height]; newBlocks = new
+	 * Block[width][height];
+	 * 
+	 * for (int x = 0; x < width; x++) { for (int y = 0; y < height; y++) { // Class
+	 * classname = (Class) stream.readObject(); // Object object =
+	 * classname.cast(stream.readObject()); // blocks[x][y] = (Block) object; //
+	 * System.out.println(object.getClass());
+	 * 
+	 * int i = stream.readInt(); blocks[x][y] =
+	 * Blocks.values()[i].getBlock().clone();
+	 * System.out.println(Blocks.values()[i].getBlock()); } } }
+	 * 
+	 * 
+	 * private void writeObject(ObjectOutputStream stream) throws IOException {
+	 * stream.defaultWriteObject();
+	 * 
+	 * for (int x = 0; x < width; x++) { for (int y = 0; y < height; y++) { //
+	 * System.err.println(blocks[x][y]);
+	 * System.err.println(Blocks.values()[indexOfBlocks(blocks[x][y])]);
+	 * 
+	 * stream.writeInt(indexOfBlocks(blocks[x][y]));
+	 * 
+	 * } } }
+	 */
+    
+    private int indexOfBlocks(Block block) {
+    	for (int i = 0; i < Blocks.values().length; i++) {
+			if(Blocks.values()[i].getBlock().equals(block)) {
+				return i;
+			}
+		}
+    	return Blocks.LAMP_BLUE.ordinal();
 	}
 }

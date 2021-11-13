@@ -6,6 +6,8 @@ import game.Game;
 
 public class Generator extends Mechanism {
 
+	private static final long serialVersionUID = 7L;
+
 	@Override
 	public void update(Game game, int x, int y) {
 		game.copyWater(x-1,y,2,0);

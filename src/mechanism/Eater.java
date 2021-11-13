@@ -7,6 +7,8 @@ import game.Game;
 
 public class Eater extends Mechanism {
 	
+	private static final long serialVersionUID = 6L;
+
 	@Override
 	public void update(Game game, int x, int y) {
 		game.removeWater(x-1,y);

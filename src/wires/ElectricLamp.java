@@ -7,7 +7,8 @@ import game.Game;
 
 public class ElectricLamp extends Wires {
 
-	
+	private static final long serialVersionUID = 12L;
+
 	@Override
 	public void update(Game game, int x, int y) {
 		super.update(game, x, y);

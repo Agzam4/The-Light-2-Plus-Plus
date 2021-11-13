@@ -7,6 +7,8 @@ import game.Game;
 
 public class Converter extends Wires {
 
+	private static final long serialVersionUID = 11L;
+
 	@Override
 	public void draw(Graphics2D g, Game game, int x, int y) {
 		super.draw(g, game, x, y);

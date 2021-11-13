@@ -7,6 +7,8 @@ import game.Game;
 
 public class ValveRight extends Mechanism {
 	
+	private static final long serialVersionUID = 9L;
+
 	@Override
 	public void update(Game game, int x, int y) {
 		game.valve(x-1,y,2,0);

@@ -7,6 +7,8 @@ import game.Game;
 
 public class LightAmplifier extends Wires {
 
+	private static final long serialVersionUID = 13L;
+	
 	int px, py;
 	
 	public LightAmplifier(int px, int py) {

@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 
 public class NeonWall extends Block {
 
+	private static final long serialVersionUID = 4L;
+
 	public NeonWall(Color color) {
 		super(color, false, true);
 	}

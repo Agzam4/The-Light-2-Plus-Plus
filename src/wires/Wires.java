@@ -6,6 +6,8 @@ import game.Block;
 
 public class Wires extends Block {
 
+	private static final long serialVersionUID = 1111111111L;
+
 	public Wires() {
 		super(Color.WHITE, Color.BLACK, false, true);
 	}

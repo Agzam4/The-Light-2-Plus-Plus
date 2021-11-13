@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 
 public class Water extends Block implements Cloneable {
 
+	private static final long serialVersionUID = 5L;
+
 	public Water(Color color) {
 		super(Color.BLACK, color == null ? Color.BLACK : color, false, false);
 		isRainbow = color == null;

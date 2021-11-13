@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 
 public class Glass extends Block {
 
+	private static final long serialVersionUID = 2L;
+
 	public Glass(Color color) {
 		super(color, false, true);
 	}

@@ -2,9 +2,12 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public class Lamp extends Block {
+public class Lamp extends Block implements Serializable {
 	
+	private static final long serialVersionUID = 3L;
+
 	public Lamp(Color color) {
 		super(color == null ? Color.BLACK : color.darker(), color == null ? Color.BLACK : color, false, true);
 		isRainbow = color == null;

@@ -10,14 +10,19 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import game.Block;
 import game.Game;
 import game.Game.Blocks;
+import work.ObjectWork;
 import game.JBlocksBox;
 
 public class JMyPanel extends JPanel {
@@ -35,6 +40,7 @@ public class JMyPanel extends JPanel {
 		Thread mainGameThread = new Thread(() -> {
 			long start;
 			long wait;
+			isGameThreadStopped = false;
 			while (true) {
 				start = System.nanoTime();
 				update();
@@ -51,6 +57,16 @@ public class JMyPanel extends JPanel {
 					Game.scale = (getHeight()-10) / (double) game.getPxHeight();
 				}else {
 					Game.scale = (getWidth()-10) / (double) game.getPxWidth();
+				}
+				
+				if(isGameThreadStopped) {
+					while (isGameThreadStopped) {
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}	
 		});
@@ -113,7 +129,9 @@ public class JMyPanel extends JPanel {
 	
 	private void setBlock() {
 		if(selectedBlock != null) {
-			game.setBlock(mx, my, selectedBlock.clone());
+			if(game.setBlock(mx, my, selectedBlock.clone())) {
+				isSaved = false;
+			}
 		}
 	}
 	
@@ -154,8 +172,8 @@ public class JMyPanel extends JPanel {
 	public void draw(Graphics2D g) {
 		if(g != null) {
 			g.translate(getNewX(), getNewY());
-			g.setColor(Color.BLACK);
-			g.fillRect(0, 0, getWidth(), getHeight());
+//			g.setColor(Color.BLACK);
+//			g.fillRect(0, 0, getWidth(), getHeight());
 			game.draw(g);
 			if(frame != null) {
 				frame.setIconImage(game.getImage());
@@ -194,4 +212,45 @@ public class JMyPanel extends JPanel {
 		game.setStopped(stopped);
 	}
 	
+	
+	public Game getGame() {
+		return game;
+	}
+
+	public void load(String filename) {
+		try {
+			System.out.println("Loading... (" + filename + ")");
+			game = (Game) ObjectWork.readObject(filename);
+			isSaved = true;
+		} catch (ClassNotFoundException | IOException e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	boolean isSaved = false;
+	
+	public void save(String path) {
+		System.out.println("Saving... (" + path + ")");
+		try {
+			ObjectWork.writeObject(game, path.endsWith(".game") ? path : path + ".game");
+			isSaved = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	boolean isGameThreadStopped;
+	
+	public void pause() {
+		isGameThreadStopped = true;
+	}
+
+	public void resume() {
+		isGameThreadStopped = false;
+	}
+	
+	public boolean isSaved() {
+		return isSaved;
+	}
 }

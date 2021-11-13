@@ -10,7 +10,7 @@ import work.ObjectWork;
 
 public class Block implements Cloneable, Serializable {
 
-	private static final long serialVersionUID = 5L;
+	private static final long serialVersionUID = 1L;
 
 	public static final int RED = 0;
 	public static final int GREEN = 1;
@@ -230,6 +230,7 @@ public class Block implements Cloneable, Serializable {
 
 	protected boolean isRainbow;
 	protected float timer = 0;
+	
 	protected void updateRainbow() {
 		if(isRainbow) {
 			timer += 5f;
@@ -256,4 +257,5 @@ public class Block implements Cloneable, Serializable {
 	public boolean isTransparent() {
 		return isVoid();
 	}
+	
 }
