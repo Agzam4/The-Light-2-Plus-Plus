@@ -188,7 +188,7 @@ public class Block implements Cloneable, Serializable {
 	}
 	
 	public double getGrayLight() {
-		return (lr + lg + lb) / 3d;
+		return (lr + lg + lb)/3d;
 	}
 	
 	

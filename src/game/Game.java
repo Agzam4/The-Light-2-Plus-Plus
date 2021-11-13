@@ -9,6 +9,7 @@ import java.util.Arrays;
 import mechanism.ValveUp;
 import wires.Converter;
 import wires.ElectricLamp;
+import wires.LightAmplifier;
 import wires.MechanicalValve;
 import wires.Wire;
 import mechanism.Eater;
@@ -19,7 +20,7 @@ import mechanism.ValveRight;
 public class Game {
 	
 	public static int BlockSize = 10;
-	public static double scale = 1.25;
+	public static double scale = 0.1;
 	boolean isViewMode;
 
 	public static final Color WHITE = new Color(255,255,255);
@@ -67,10 +68,6 @@ public class Game {
 		WATER_PINK 		(new Water(PINK)),
 		WATER_CRIMSON 	(new Water(CRIMSON)),
 		WATER_RAINBOW 	(new Water(null)),
-
-		VALVE_UP		(new ValveUp()),
-		VALVE_RIGHT		(new ValveRight()),
-		VALVE_LEFT		(new ValveLeft()),
 		
 		GLASS				(new Glass(BROWN)),
 		GLASS_WHITE 		(new Glass(WHITE)),
@@ -100,6 +97,10 @@ public class Game {
 		NEONWALL_PINK 		(new NeonWall(PINK)),
 		NEONWALL_CRIMSON 	(new NeonWall(CRIMSON)),
 
+		VALVE_UP			(new ValveUp()),
+		VALVE_RIGHT			(new ValveRight()),
+		VALVE_LEFT			(new ValveLeft()),
+
 		GENERATOR			(new Generator()),
 		EATER				(new Eater()),
 		
@@ -107,6 +108,11 @@ public class Game {
 		CONVERTER			(new Converter()),
 		ELECTRIC_LAMP		(new ElectricLamp()),
 		MECHANICAL_VALVE	(new MechanicalValve()),
+
+		LIGHT_AMPLIFIER_UP		(new LightAmplifier(0, -1)),
+		LIGHT_AMPLIFIER_DOWN	(new LightAmplifier(0, 1)),
+		LIGHT_AMPLIFIER_RIGHT	(new LightAmplifier(1, 0)),
+		LIGHT_AMPLIFIER_LEFT	(new LightAmplifier(-1, 0)),
 		
 		/*
 		 * TODO:
@@ -115,6 +121,7 @@ public class Game {
 		 * 	Logic Valve
 		 */
 		TO_DELETE (new Block(Color.BLACK, true));
+		
 		
 		Block block;
 		
@@ -204,19 +211,19 @@ public class Game {
 	private transient BufferedImage game;
 
 	public void update() { // TODO: update
-		
+
 		if(isNeedCreateCaves) {
 			generateCaves();
 			isNeedCreateCaves = false;
 		}
-		
+
 		// blocks -> newBlocks
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				newBlocks[x][y] = blocks[x][y];
 			}
 		}
-				
+
 		// update mechanisms (maybe move in "update-water-for")
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
@@ -225,57 +232,57 @@ public class Game {
 				}
 			}
 		}
-				
-		// update water
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				if(!blocks[x][y].isMechanism()) {
-					blocks[x][y].update(this, x, y);
-				}
-				if(blocks[x][y].isWater() && newBlocks[x][y].isWater()) {
-					if(checkMoveBlock(x, y, 0, 1)) {
-						moveBlock(x, y, 0, 1);
-					}else {
-						boolean canMoveRight = checkMoveBlock(x, y, 1, 0);
-						boolean canMoveLeft = checkMoveBlock(x, y, -1, 0);
-						double moveRight = -1;
-						double moveLeft = -1;
-						if(canMoveRight && canMoveLeft) {
-							if(canMoveRight) {
-								moveRight = blocks[x+1][y].getGrayLight();
-							}
-							if(canMoveLeft) {
-								moveLeft = blocks[x-1][y].getGrayLight();
-							}
-							if(moveRight == moveLeft) {
-								moveLeft =  Math.random();
-								moveRight = Math.random();
-							}
 
-							if(moveRight < moveLeft && moveRight != -1) {
-								moveBlock(x, y, 1, 0);
-							} else if(moveLeft < moveRight && moveLeft != -1) {
-								moveBlock(x, y, -1, 0);
-							}
-						} else if(canMoveRight || canMoveLeft) {	
-							if(canMoveRight) {
-								moveBlock(x, y, 1, 0);
-							}
-							if(canMoveLeft) {
-								moveBlock(x, y, -1, 0);
+		if(!isStopped) {
+			// update water
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					if(!blocks[x][y].isMechanism()) {
+						blocks[x][y].update(this, x, y);
+					}
+					if(blocks[x][y].isWater() && newBlocks[x][y].isWater()) {
+						if(checkMoveBlock(x, y, 0, 1)) {
+							moveBlock(x, y, 0, 1);
+						}else {
+							boolean canMoveRight = checkMoveBlock(x, y, 1, 0);
+							boolean canMoveLeft = checkMoveBlock(x, y, -1, 0);
+							double moveRight = -1;
+							double moveLeft = -1;
+							if(canMoveRight && canMoveLeft) {
+								if(canMoveRight) {
+									moveRight = r[x+1][y] + g[x+1][y] + b[x+1][y];
+								}
+								if(canMoveLeft) {
+									moveLeft = r[x-1][y] + g[x-1][y] + b[x-1][y];
+								}
+								if(moveRight == moveLeft) {
+									moveLeft =  Math.random();
+									moveRight = Math.random();
+								}
+
+								if(moveRight < moveLeft && moveRight != -1) {
+									moveBlock(x, y, 1, 0);
+								} else if(moveLeft < moveRight && moveLeft != -1) {
+									moveBlock(x, y, -1, 0);
+								}
+							} else if(canMoveRight || canMoveLeft) {	
+								if(canMoveRight) {
+									moveBlock(x, y, 1, 0);
+								}
+								if(canMoveLeft) {
+									moveBlock(x, y, -1, 0);
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		
-		
+
 		// newBlocks -> blocks
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				blocks[x][y] = newBlocks[x][y];
-//				newBlocks[x][y] = Blocks.AIR.getBlock();
 			}
 		}
 
@@ -639,4 +646,23 @@ public class Game {
 		return false;
 	}
 	
+	private boolean isStopped = false;
+
+	public boolean isStopped() {
+		return isStopped;
+	}
+	
+	public void setStopped(boolean isStopped) {
+		this.isStopped = isStopped;
+	}
+
+	public void lightAmplifier(int x, int y, int px, int py) {
+		if(checkBounds(x-px, y-py)) {
+			if(checkBounds(x+px, y+py)) {
+				wr[x+px][y+py] = wr[x-px][y-py]*5;
+				wg[x+px][y+py] = wg[x-px][y-py]*5;
+				wb[x+px][y+py] = wb[x-px][y-py]*5;
+			}
+		}
+	}
 }

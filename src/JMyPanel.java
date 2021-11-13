@@ -28,18 +28,30 @@ public class JMyPanel extends JPanel {
 	
 	public JMyPanel() {
 		setFocusable(true);
-		setBackground(new Color(15,15,15));
+		setBackground(Color.BLACK);
 	}
 	
 	public void go() {
 		Thread mainGameThread = new Thread(() -> {
+			long start;
+			long wait;
 			while (true) {
+				start = System.nanoTime();
 				update();
 				draw((Graphics2D) getGraphics());
+				wait = 100-(System.nanoTime()-start)/1_000_000;
+				if(wait < 1) wait = 1;
+				System.out.println(wait);
 				try {
-					Thread.sleep(100);
+					Thread.sleep(wait);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
+				}
+				Game.scale = 1;
+				if(getHeight() < getWidth()) {
+					Game.scale = (getHeight()-10) / (double) game.getPxHeight();
+				}else {
+					Game.scale = (getWidth()-10) / (double) game.getPxWidth();
 				}
 			}	
 		});
@@ -112,8 +124,12 @@ public class JMyPanel extends JPanel {
 	
 	public void update() {
 		game.update();
-		if(isMousePressed && updateCount%2 == 0) {
-			setBlock();
+		if(isMousePressed) {
+			if(updateCount%2 == 0) {
+				setBlock();
+			}
+		}else {
+			updateCount = 1;
 		}
 		updateCount++;
 	}
@@ -137,14 +153,16 @@ public class JMyPanel extends JPanel {
 	}
 	
 	public void draw(Graphics2D g) {
-//		g.setColor(new Color(15,15,15));
-//		g.fillRect(0, 0, getWidth(), getHeight());
-		g.translate(getNewX(), getNewY());
-		game.draw(g);
-		if(frame != null) {
-			frame.setIconImage(game.getImage());
+		if(g != null) {
+			g.translate(getNewX(), getNewY());
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, getWidth(), getHeight());
+			game.draw(g);
+			if(frame != null) {
+				frame.setIconImage(game.getImage());
+			}
+			g.dispose();
 		}
-		g.dispose();
 	}
 	
 	JFrame frame;
@@ -168,4 +186,13 @@ public class JMyPanel extends JPanel {
 	public void createCaves() {
 		game.createCaves();
 	}
+
+	public boolean isStopped() {
+		return game.isStopped();
+	}
+
+	public void setStop(boolean stopped) {
+		game.setStopped(stopped);
+	}
+	
 }

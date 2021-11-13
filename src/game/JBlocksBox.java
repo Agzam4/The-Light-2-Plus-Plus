@@ -25,6 +25,7 @@ public class JBlocksBox extends JComboBox<String> {
 	}
 	
 	public void setModel() {
+		System.out.println("Blocks: " + names.size());
 		setModel(new DefaultComboBoxModel<String>(names.toArray(new String[0])));
 	}
 	
