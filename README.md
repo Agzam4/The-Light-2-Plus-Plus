@@ -1,6 +1,10 @@
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/agzam4/The-Light-2-Plus-Plus?color=9000FF&style=for-the-badge)
+![GitHub all releases](https://img.shields.io/github/downloads/agzam4/The-Light-2-Plus-Plus/total?color=0090FF&style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/agzam4/The-Light-2-Plus-Plus?color=FFE572&style=for-the-badge)
+
+![Lines of code](https://img.shields.io/tokei/lines/github/agzam4/The-Light-2-Plus-Plus?color=blueviolet&style=flat-square)
 # The Light 2 + +
 #### Reprogrammed version of The Light 2
-
 
 * 60+ blocks
 * Improved wire-blocks
