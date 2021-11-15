@@ -11,7 +11,7 @@
 * The new physics of light
 * The new UI
 
-## [Download game (v1.1.1)](https://github.com/Agzam4/The-Light-2-Plus-Plus/raw/main/The%20Light2%2B%2B%20v1.1.1.jar)
+## [Download game [release v1.1.1]](https://github.com/Agzam4/The-Light-2-Plus-Plus/releases/download/v1.1.1/TheLight2++_v1.1.1.jar)
 #### _[Download game (v1.0.0)](https://github.com/Agzam4/The-Light-2-Plus-Plus/raw/main/The%20Light2%2B%2B%20v1.0.0.jar)_
 
 
