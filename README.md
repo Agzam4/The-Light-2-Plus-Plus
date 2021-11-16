@@ -19,4 +19,4 @@
 ## Writing code:
 ##### [[Wiki] Creating blocks](https://github.com/Agzam4/The-Light-2-Plus-Plus/wiki/Creating-blocks)
 ***
-![](https://repository-images.githubusercontent.com/316701133/b4678900-31c3-11eb-9d4f-e0943b8027d7)
+![](https://repository-images.githubusercontent.com/427095683/8e892787-efe0-47cf-aa43-48add8fc2239)
