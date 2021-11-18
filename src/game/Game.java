@@ -28,8 +28,10 @@ import mechanism.ValveRight;
 
 public class Game implements Serializable {
 	
+	private static final long serialVersionUID = 0L;
+	
 	public static int BlockSize = 10;
-	public static double scale = 0.1;
+	public static transient double scale = 0.1;
 	boolean isViewMode;
 
 	public static final Color WHITE = new Color(255,255,255);
@@ -46,7 +48,7 @@ public class Game implements Serializable {
 	public static final Color PINK = new Color(255,0,255);
 	public static final Color CRIMSON = new Color(255,0,100);
 	
-	public enum Blocks {
+	public static enum Blocks {
 		AIR (new Block(Color.BLACK, true)),
 		WALL (new Block(BROWN, false)),
 		
@@ -155,7 +157,7 @@ public class Game implements Serializable {
 	
 
 	private Block[][] blocks;
-	private Block[][] newBlocks;
+	private transient Block[][] newBlocks;
 	
 	int[][] r,g,b;
 	int[][] wr,wg,wb; // wires
@@ -228,6 +230,10 @@ public class Game implements Serializable {
 			generateCaves();
 			isNeedCreateCaves = false;
 		}
+		
+		if(newBlocks == null) {
+			newBlocks = new Block[width][height];
+		}
 
 		// blocks -> newBlocks
 		for (int y = 0; y < height; y++) {
@@ -247,7 +253,7 @@ public class Game implements Serializable {
 
 		if(!isStopped) {
 			// update water
-			for (int y = 0; y < height; y++) {
+			for (int y = height-1; y > -1; y--) {
 				for (int x = 0; x < width; x++) {
 					if(!blocks[x][y].isMechanism()) {
 						blocks[x][y].update(this, x, y);
@@ -526,12 +532,14 @@ public class Game implements Serializable {
 		}
 	}
 
-	public void copyWater(int x, int y, int px, int py) {
+	public boolean copyWater(int x, int y, int px, int py) {
 		if(checkMoveBlock(x, y, px, py)) {
 			if(blocks[x][y].isWater()) {
 				newBlocks[x+px][y+py] = new Water(blocks[x][y].getLightColor());
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public void removeWater(int x, int y) {

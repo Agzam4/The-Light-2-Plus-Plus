@@ -45,7 +45,7 @@ public class JMyPanel extends JPanel {
 				start = System.nanoTime();
 				update();
 				draw((Graphics2D) getGraphics());
-				wait = 100-(System.nanoTime()-start)/1_000_000;
+				wait = 75-(System.nanoTime()-start)/1_000_000;
 				if(wait < 1) wait = 1;
 				try {
 					Thread.sleep(wait);
@@ -142,9 +142,9 @@ public class JMyPanel extends JPanel {
 	public void update() {
 		game.update();
 		if(isMousePressed) {
-			if(updateCount%2 == 0) {
+//			if(updateCount%2 == 0) {
 				setBlock();
-			}
+//			}
 		}else {
 			updateCount = 1;
 		}

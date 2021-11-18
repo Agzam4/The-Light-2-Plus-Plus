@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.UIDefaults;
@@ -20,10 +21,13 @@ import javax.swing.border.LineBorder;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 
 import game.JBlocksBox;
 import javax.swing.JSpinner;
@@ -79,7 +83,7 @@ public class JLight2 extends JFrame {
 		
 		UIDefaults ui = UIManager.getLookAndFeel().getDefaults();
 		 
-		for ( Object o : ui.keySet() ){
+		for ( Object o : ui.keySet()) {
 			System.out.println(o.toString());
 		}
 		
@@ -190,15 +194,6 @@ public class JLight2 extends JFrame {
 			game.clear();
 		});
 		
-
-		JMenuItem save = getJMenuItem("Save", KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				InputEvent.CTRL_DOWN_MASK));
-		file.add(save);
-		
-		save.addActionListener(e -> {
-			save(pathString);
-		});
-		
 		JMenuItem saveAs = getJMenuItem("Save As", KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		file.add(saveAs);
@@ -212,17 +207,23 @@ public class JLight2 extends JFrame {
 		file.add(open);
 		
 		open.addActionListener(e -> {
-			FileDialog fd = new FileDialog(new JFrame());
-			fd.setVisible(true);
-			File[] f = fd.getFiles();
-			if(f.length > 0) {
-				pathString = fd.getFiles()[0].getAbsolutePath();
-				game.load(pathString);
-				try {
-					pathString = pathString.substring(0, pathString.lastIndexOf('.'));
-				} catch (StringIndexOutOfBoundsException e2) {
+			Thread t = new Thread(() -> {
+//				game.pause();
+				FileDialog fd = new FileDialog(new JFrame());
+				fd.setVisible(true);
+				fd.setFilenameFilter((dir, name) -> name.endsWith(".txt"));
+				String filename = fd.getFile();
+				if (filename != null) {
+					pathString = filename;
+					game.load(pathString);
+					try {
+						pathString = pathString.substring(0, pathString.lastIndexOf('.'));
+					} catch (StringIndexOutOfBoundsException e2) {
+					}
 				}
-			}
+//				game.resume();
+			});
+			t.start();
 		});
 		
 
@@ -235,6 +236,7 @@ public class JLight2 extends JFrame {
 		screen.addActionListener(e -> {
 			game.clear();
 		});
+		
 		
 		// ctrl + p
 		
@@ -262,29 +264,56 @@ public class JLight2 extends JFrame {
 //				}
 //			}
 //		});
+		file.add(getJSeparator());
+
+		JMenuItem saveAndExit = getJMenuItem("Save & Exit", KeyStroke.getKeyStroke(KeyEvent.VK_E,
+				InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+		file.add(saveAndExit);
+		
+		saveAndExit.addActionListener(e -> {
+			setVisible(false);
+			if(pathString == null) {
+				saveAs(true);
+			}else {
+				game.save(getPathString());
+				System.exit(0);
+			}
+		});
 		
 		Thread title = new Thread(() -> {
 			while(true) {
-				setTitle(frametitle + " - " + getPathString() + (game.isSaved() ? "" : "*"));
+				setTitle(frametitle + " / " + getPathString() + (game.isSaved() ? "" : "*"));
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		title.start();
 	}
 	
-	
 	private void saveAs() {
-		game.pause();
-		FileDialog fd = new FileDialog(new JFrame());
-		fd.setFile(getPathString());
-		fd.setMode(FileDialog.SAVE);
-		fd.setVisible(true);
-		File[] f = fd.getFiles();
-		if(f.length > 0) {
-			pathString = fd.getFiles()[0].getAbsolutePath();
-			save(pathString);
-		}
-		
-		game.resume();
+		saveAs(true);
+	}
+	
+	private void saveAs(boolean exit) {
+		Thread t = new Thread(() -> {
+			FileDialog fd = new FileDialog(new JFrame());
+			fd.setFile(getPathString() + ".game");
+			fd.setMode(FileDialog.SAVE);
+			fd.setVisible(true);
+			File[] f = fd.getFiles();
+			if(f.length > 0) {
+				pathString = fd.getFiles()[0].getAbsolutePath();
+				save(pathString);
+			}
+			fd.dispose();
+			if(exit) {
+				System.exit(0);
+			}
+		});
+		t.start();
 	}
 	
 	
@@ -292,7 +321,7 @@ public class JLight2 extends JFrame {
 		if(path == null) {
 			saveAs();
 		}else {
-			game.save(path);
+			game.save(getPathString());
 		}
 	}
 
