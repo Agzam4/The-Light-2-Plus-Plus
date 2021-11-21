@@ -11,6 +11,8 @@
 * The new physics of light
 * The new UI
 
+### ⭐ **Don't forget to put** ⭐ _(if you liked it)_
+
 ## [Download game [release v1.2.1]](https://github.com/Agzam4/The-Light-2-Plus-Plus/releases/download/v1.2.1/TheLight2++_v1.2.1.jar)
 ![](https://img.shields.io/badge/%20-v1.2.1-blueviolet?style=for-the-badge)
 ![](https://img.shields.io/badge/%20-51KB-brightgreen?style=for-the-badge)
@@ -30,6 +32,8 @@
 * Printscreen
 * Writing to GIF
 ***
+#### [Write about the bug](https://github.com/Agzam4/The-Light-2-Plus-Plus/issues/new/choose)
+
 ![](https://repository-images.githubusercontent.com/427095683/8e892787-efe0-47cf-aa43-48add8fc2239)
 
 # The Light 2
