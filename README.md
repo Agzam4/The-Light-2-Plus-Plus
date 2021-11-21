@@ -26,6 +26,9 @@
 ![](https://img.shields.io/badge/%20-50%2C9KB-brightgreen?style=flat-square)
 ![](https://img.shields.io/github/downloads/agzam4/The-Light-2-Plus-Plus/v1.1.1/total?color=007FFF&label=%20&logo=docusign&logoColor=FFF&style=flat-square)
 
+### Soon:
+* Printscreen
+* Writing to GIF
 ***
 ![](https://repository-images.githubusercontent.com/427095683/8e892787-efe0-47cf-aa43-48add8fc2239)
 
